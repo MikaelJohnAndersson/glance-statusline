@@ -80,7 +80,7 @@ sparkline() {
 }
 
 GAP="  "
-BAR=" ${DIM}│${RESET} "
+BAR=" ${DIM}|${RESET} "
 # Claude Code indents the row 2 columns and keeps 2 free at the right
 RIGHT_MARGIN=4
 
