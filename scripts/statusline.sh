@@ -42,8 +42,6 @@ ICON_CONTEXT=$'\xef\x8b\x9b'
 ICON_CACHE=$'\xef\x83\xa7'
 ICON_RESET=$'\xef\x80\xa1'
 ICON_HELP=$'\xef\x81\x99'
-# Between an icon and its label: none suits a Mono Nerd Font, " " the regular one, whose icons overflow their cell
-ICON_GAP=""
 
 c() { printf '\e[38;5;%sm' "$1"; }
 RESET=$'\e[0m'
@@ -132,7 +130,7 @@ github_url() {
 path=""
 stats=()
 
-[ -n "$dir" ] && path="$(c 75)${ICON_DIR}${RESET}${ICON_GAP}${TEXT}${dir##*/}${RESET}"
+[ -n "$dir" ] && path="$(c 75)${ICON_DIR}${RESET} ${TEXT}${dir##*/}${RESET}"
 
 if [ -n "$dir" ] && head=$(git -C "$dir" --no-optional-locks rev-parse --short HEAD 2>/dev/null); then
   repo_url=$(github_url)
@@ -142,7 +140,7 @@ if [ -n "$dir" ] && head=$(git -C "$dir" --no-optional-locks rev-parse --short H
     branch_target=${pr_url:-${repo_url:+$repo_url/tree/$branch}}
     branch_text=$branch
     [ -n "$branch_target" ] && branch_text=$(link "$branch_target" "$branch")
-    path+="${SLASH}$(c 114)${ICON_BRANCH}${RESET}${ICON_GAP}${TEXT}${branch_text}${RESET}"
+    path+="${SLASH}$(c 114)${ICON_BRANCH}${RESET} ${TEXT}${branch_text}${RESET}"
   fi
 
   head_text=$head
@@ -185,7 +183,7 @@ fi
 repo_row=$path
 [ "${#changes[@]}" -gt 0 ] && repo_row+="${BAR}$(join_with "$GAP" "${changes[@]}")"
 
-clock="$(c 245)${ICON_CLOCK}${ICON_GAP}$(date +%H:%M)${RESET}${BAR}${DIM}$(link "$CHEATSHEET_URL" "$ICON_HELP")${RESET}"
+clock="$(c 245)${ICON_CLOCK} $(date +%H:%M)${RESET}${BAR}${DIM}$(link "$CHEATSHEET_URL" "$ICON_HELP")${RESET}"
 
 # --- row 2: Claude at a glance ---
 
@@ -233,9 +231,9 @@ fi
 
 cache=""
 if [ "$cache_warm" = "true" ] && [ -n "$cache_expires" ] && [ "$cache_expires" -gt "$now" ]; then
-  cache="$(c 80)${ICON_CACHE}${ICON_GAP}$(duration_short $(( cache_expires - now )))${RESET}"
+  cache="$(c 80)${ICON_CACHE} $(duration_short $(( cache_expires - now )))${RESET}"
 elif [ "$cache_warm" = "false" ]; then
-  cache="${DIM}${ICON_CACHE}${ICON_GAP}cold${RESET}"
+  cache="${DIM}${ICON_CACHE} cold${RESET}"
 fi
 
 [ -n "$five_pct" ] && five=${five_pct%.*}
@@ -249,22 +247,22 @@ glance_row() {
 
   if [ -n "$model" ]; then
     part="$(c 177)${model_icon}"
-    [ "$level" -lt "$DROP_MODEL_NAME" ] && part+="${ICON_GAP}${model}"
+    [ "$level" -lt "$DROP_MODEL_NAME" ] && part+=" ${model}"
     groups+=("${part}${RESET}")
   fi
 
   if [ -n "$ctx" ]; then
-    part="$(c "$(shown_colour "$ctx_stale" "$pct")")${ICON_CONTEXT}${ICON_GAP}${pct}%${RESET}"
+    part="$(c "$(shown_colour "$ctx_stale" "$pct")")${ICON_CONTEXT} ${pct}%${RESET}"
     [ -n "$cache" ] && [ "$level" -lt "$DROP_CACHE" ] && part+="${GAP}${cache}"
     groups+=("$part")
   elif [ -n "$model" ]; then
-    groups+=("$(c "$PENDING")${ICON_CONTEXT}${ICON_GAP}…${RESET}")
+    groups+=("$(c "$PENDING")${ICON_CONTEXT} …${RESET}")
   fi
 
   if [ -n "$five_pct" ]; then
     part="$(link "$USAGE_URL" "${DIM}5h${RESET} $(c "$(shown_colour "$limits_stale" "$five")")${five}%")${RESET}"
     if [ -n "$five_reset" ] && [ "$five_reset" -gt "$now" ] && [ "$level" -lt "$DROP_FIVE_RESET" ]; then
-      part+=" $(c 245)${ICON_RESET}${ICON_GAP}$(duration_short $(( five_reset - now )))${RESET}"
+      part+=" $(c 245)${ICON_RESET} $(duration_short $(( five_reset - now )))${RESET}"
     fi
     groups+=("$part")
   fi
@@ -272,7 +270,7 @@ glance_row() {
   if [ -n "$week_pct" ] && [ "$level" -lt "$DROP_WEEK" ]; then
     part="$(link "$USAGE_URL" "${DIM}7d${RESET} $(c "$(shown_colour "$limits_stale" "$week")")${week}%")${RESET}"
     if [ -n "$week_reset" ] && [ "$week_reset" -gt "$now" ] && [ "$level" -lt "$DROP_WEEK_RESET" ]; then
-      part+=" $(c 245)${ICON_RESET}${ICON_GAP}$(duration_short $(( week_reset - now )))${RESET}"
+      part+=" $(c 245)${ICON_RESET} $(duration_short $(( week_reset - now )))${RESET}"
     fi
     groups+=("$part")
   fi
@@ -308,11 +306,11 @@ detail_row() {
       parts+=("$(labelled r "$(tokens_short "${in_read:-0}")") $(labelled w "$(tokens_short "${in_write:-0}")") $(labelled i "$(tokens_short "${in_fresh:-0}")") $(labelled o "$(tokens_short "${out_tokens:-0}")")")
     fi
     [ -n "$spark" ] && [ "$level" -lt "$DROP_SPARK" ] && parts+=("$spark")
-    groups+=("$(c 109)${ICON_CONTEXT}${RESET}${ICON_GAP}$(join_with " " "${parts[@]}")")
+    groups+=("$(c 109)${ICON_CONTEXT}${RESET} $(join_with " " "${parts[@]}")")
   fi
 
   if [ -n "$hit_ratio" ] && [ "$level" -lt "$DROP_CACHE_GROUP" ]; then
-    part="$(c 80)${ICON_CACHE}${RESET}${ICON_GAP}$(labelled hit "$(awk -v r="$hit_ratio" 'BEGIN { printf "%d%%", r * 100 }')")"
+    part="$(c 80)${ICON_CACHE}${RESET} $(labelled hit "$(awk -v r="$hit_ratio" 'BEGIN { printf "%d%%", r * 100 }')")"
     if [ -n "$misses" ] && [ "$misses" -gt 0 ]; then
       part+=" $(labelled miss "$(c 214)${misses}${RESET}")"
       [ -n "$miss_cause" ] && [ "$level" -lt "$DROP_MISS_CAUSE" ] && part+=" ${DIM}(${miss_cause})${RESET}"
@@ -331,12 +329,12 @@ detail_row() {
     [ "$level" -lt "$DROP_RESET_CLOCKS" ] && part+=" ${DIM}$(clock_at "$week_reset")${RESET}"
     parts+=("$part")
   fi
-  [ "${#parts[@]}" -gt 0 ] && [ "$level" -lt "$DROP_RESETS" ] && groups+=("$(c 245)${ICON_RESET}${RESET}${ICON_GAP}$(join_with "$GAP" "${parts[@]}")")
+  [ "${#parts[@]}" -gt 0 ] && [ "$level" -lt "$DROP_RESETS" ] && groups+=("$(c 245)${ICON_RESET}${RESET} $(join_with "$GAP" "${parts[@]}")")
 
   parts=()
   [ -n "$cost" ] && parts+=("$(c 222)$(printf '$%.2f' "$cost")${RESET}")
   if [ -n "$duration_ms" ] && [ "$level" -lt "$DROP_SESSION_TIME" ]; then
-    part="$(c 245)${ICON_CLOCK}${ICON_GAP}$(duration_short $(( duration_ms / 1000 )))${RESET}"
+    part="$(c 245)${ICON_CLOCK} $(duration_short $(( duration_ms / 1000 )))${RESET}"
     [ -n "$api_ms" ] && [ "$level" -lt "$DROP_API_TIME" ] && part+=" $(labelled api "$(duration_short $(( api_ms / 1000 )))")"
     parts+=("$part")
   fi
