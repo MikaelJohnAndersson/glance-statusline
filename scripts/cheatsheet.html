@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Status line cheat sheet</title>
+<style>
+  :root {
+    --bg: #fbfaf8; --surface: #ffffff; --text: #1f2328; --muted: #6b7280; --line: #e5e2dc;
+    --blue: #2f7fd1; --green: #2e9b4f; --amber: #c27a00; --red: #d0453b; --coral: #d4624f;
+    --lilac: #9a5fd0; --teal: #138a8a; --gold: #a67c00; --sky: #3c95c9; --purple: #8059b3; --grey: #8a8f98;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #16181c; --surface: #1d2025; --text: #e6e6e6; --muted: #9aa0a8; --line: #2c3037;
+      --blue: #5fafff; --green: #87d787; --amber: #ffaf00; --red: #ff5f5f; --coral: #ff8787;
+      --lilac: #d787ff; --teal: #5fd7d7; --gold: #ffd787; --sky: #87d7ff; --purple: #af87d7; --grey: #8a8a8a;
+      color-scheme: dark;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+  main { max-width: 860px; margin: 0 auto; padding: 40px 16px 64px; }
+  h1 { font-size: 26px; margin: 0 0 4px; }
+  .lede { color: var(--muted); margin: 0 0 28px; }
+  h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 36px 0 10px; }
+  .mono, code, .sym { font-family: "FiraCode Nerd Font", "FiraCode Nerd Font Mono", ui-monospace, Menlo, monospace; }
+  .preview {
+    background: #101215; color: #d0d0d0; border-radius: 10px; padding: 14px 16px;
+    font-size: 13.5px; line-height: 1.7; overflow-x: auto; white-space: pre;
+  }
+  .preview .d { color: #808080; }
+  table { width: 100%; border-collapse: collapse; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  td { padding: 9px 14px; border-top: 1px solid var(--line); vertical-align: top; }
+  tr:first-child td { border-top: 0; }
+  td.sym { width: 150px; white-space: nowrap; font-size: 15px; }
+  .note { color: var(--muted); font-size: 13.5px; }
+  .blue { color: var(--blue); } .green { color: var(--green); } .amber { color: var(--amber); }
+  .red { color: var(--red); } .coral { color: var(--coral); } .lilac { color: var(--lilac); }
+  .teal { color: var(--teal); } .gold { color: var(--gold); } .sky { color: var(--sky); }
+  .purple { color: var(--purple); } .grey { color: var(--grey); }
+  a { color: var(--blue); }
+  code { font-size: 13px; background: var(--line); padding: 1px 5px; border-radius: 4px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Status line cheat sheet</h1>
+  <p class="lede">What each symbol on the Claude Code status line means. The third row is off until you run <code>/glance:detail</code>. Anything without data is left out, so a row may show fewer parts than this.</p>
+
+  <div class="preview mono"><span class="blue">&#xf07c;</span> my-app <span class="d">/</span> <span class="green">&#xf126;</span> main <span class="d">/</span> <span class="grey">e70fed6</span> <span class="d">│</span> <span class="sky">↑2</span> <span class="green">●3</span> <span class="amber">✚9</span> <span class="grey">?1</span>  <span class="green">+212</span> <span class="coral">−47</span>           <span class="grey">&#xf017; 02:31</span> <span class="d">│</span> <span class="d">&#xf059;</span>
+<span class="lilac">&#xf001; Opus 5.5</span> <span class="d">│</span> <span class="green">&#xf2db; 58%</span>  <span class="teal">&#xf0e7; 3m</span> <span class="d">│</span> <span class="d">5h</span> <span class="green">41%</span> <span class="grey">&#xf021; 1h51</span> <span class="d">│</span> <span class="d">7d</span> <span class="green">23%</span> <span class="grey">&#xf021; 4d4h</span>
+<span style="color:#87afaf">&#xf2db;</span> 116k<span class="d">/200k</span> <span class="d">r</span> 110k <span class="d">w</span> 4k <span class="d">i</span> 2k <span class="d">o</span> 1k <span style="color:#87afaf">▂▃▅▆</span> <span class="d">│</span> <span class="teal">&#xf0e7;</span> <span class="d">hit</span> 94% <span class="d">miss</span> <span class="amber">1</span> <span class="d">│</span> <span class="grey">&#xf021;</span> <span class="d">5h</span> 1h51 <span class="d">04:43</span>  <span class="d">7d</span> 4d4h <span class="d">Tue 06:51</span> <span class="d">│</span> <span class="gold">$1.84</span>  <span class="grey">&#xf017;</span> 23m <span class="d">api</span> 7m</div>
+
+  <h2>Row 1 — the repo</h2>
+  <table>
+    <tr><td class="sym"><span class="blue">&#xf07c;</span> my-app</td><td>The folder Claude Code is working in.</td></tr>
+    <tr><td class="sym"><span class="green">&#xf126;</span> main</td><td>Current branch. <b>⌘-click</b> opens its pull request, or the branch on GitHub when it has none.</td></tr>
+    <tr><td class="sym"><span class="grey">e70fed6</span></td><td>Short hash of <code>HEAD</code>. <b>⌘-click</b> opens the commit on GitHub. On a detached HEAD the branch is left out.</td></tr>
+    <tr><td class="sym"><span class="sky">↑2</span> <span class="coral">↓1</span></td><td>Commits ahead of / behind the upstream branch.</td></tr>
+    <tr><td class="sym"><span class="green">●3</span></td><td>Files staged for commit.</td></tr>
+    <tr><td class="sym"><span class="amber">✚9</span></td><td>Files changed but not staged.</td></tr>
+    <tr><td class="sym"><span class="grey">?1</span></td><td>Untracked files.</td></tr>
+    <tr><td class="sym"><span class="purple">≡2</span></td><td>Stash entries.</td></tr>
+    <tr><td class="sym"><span class="green">+212</span> <span class="coral">−47</span></td><td>Lines Claude added / removed this session (not the git diff).</td></tr>
+    <tr><td class="sym"><span class="grey">&#xf017; 02:31</span></td><td>Clock, pinned to the right. Dropped when the window is too narrow.</td></tr>
+    <tr><td class="sym"><span class="grey">&#xf059;</span></td><td><b>⌘-click</b> opens this page.</td></tr>
+  </table>
+
+  <h2>Row 2 — Claude at a glance</h2>
+  <table>
+    <tr><td class="sym lilac">&#xf001; Opus</td><td>Opus — a music note (an opus is a musical work).</td></tr>
+    <tr><td class="sym lilac">&#xf040; Sonnet</td><td>Sonnet — a pencil.</td></tr>
+    <tr><td class="sym lilac">&#xf06c; Haiku</td><td>Haiku — a leaf.</td></tr>
+    <tr><td class="sym lilac">&#xf02d; Fable</td><td>Fable — an open book.</td></tr>
+    <tr><td class="sym lilac">✦ other</td><td>Any other model.</td></tr>
+    <tr><td class="sym"><span class="green">&#xf2db; 58%</span></td><td>Context window used. <span class="green">green</span> below 60%, <span class="amber">amber</span> from 60%, <span class="red">red</span> from 85%.</td></tr>
+    <tr><td class="sym grey">&#xf2db; …</td><td>Waiting for Claude Code’s first numbers, sent with the session’s first reply. Before then, context and the limits show their last known values in grey.</td></tr>
+    <tr><td class="sym"><span class="teal">&#xf0e7; 3m</span></td><td>Prompt cache is warm, and goes cold in 3 minutes.</td></tr>
+    <tr><td class="sym grey">&#xf0e7; cold</td><td>Cache has expired: the next message re-processes the whole conversation, which is slower and uses more of your limit.</td></tr>
+    <tr><td class="sym"><span class="grey">5h</span> <span class="green">41%</span></td><td>5-hour usage limit used. <b>⌘-click</b> opens your usage page on claude.ai. Pro/Max only, after the first reply.</td></tr>
+    <tr><td class="sym"><span class="grey">&#xf021; 1h51</span></td><td>Time until the limit before it resets: after 5h, the 5-hour window; after 7d, the week.</td></tr>
+    <tr><td class="sym"><span class="grey">7d</span> <span class="green">23%</span></td><td>7-day limit. <b>⌘-click</b> opens the usage page.</td></tr>
+  </table>
+
+  <h2>Row 3 — detail, toggled with <code>/glance:detail</code></h2>
+  <table>
+    <tr><td class="sym"><code>/glance:detail</code></td><td>Turns this row on or off. It shows on the next refresh, within 30 s.</td></tr>
+    <tr><td class="sym"><span style="color:#5f8787">&#xf2db;</span> 116k<span class="grey">/200k</span></td><td>Tokens in the context, out of the window’s size.</td></tr>
+    <tr><td class="sym"><span class="grey">r</span> 110k <span class="grey">w</span> 4k</td><td>Of the last request’s input: <b>r</b>ead from the cache (cheap), <b>w</b>ritten to the cache.</td></tr>
+    <tr><td class="sym"><span class="grey">i</span> 2k <span class="grey">o</span> 1k</td><td>Fresh <b>i</b>nput, not cached, and the reply’s <b>o</b>utput tokens.</td></tr>
+    <tr><td class="sym" style="color:#5f8787">▁▂▃▅▆</td><td>Context % over the session’s last 8 changes. A drop is a compaction or <code>/clear</code>.</td></tr>
+    <tr><td class="sym"><span class="teal">&#xf0e7;</span> <span class="grey">hit</span> 94%</td><td>Share of this session’s input read from the cache. Higher is cheaper and faster.</td></tr>
+    <tr><td class="sym"><span class="grey">miss</span> <span class="amber">1</span> <span class="grey">(ttl_expired_5m)</span></td><td>Requests that re-processed what the cache already held, and the likely cause of the last one.</td></tr>
+    <tr><td class="sym"><span class="grey">&#xf021;</span> <span class="grey">5h</span> 1h51 <span class="grey">04:43</span></td><td>Time until each limit resets, and the clock time it happens. <span class="grey">7d</span> shows the weekday too.</td></tr>
+    <tr><td class="sym gold">$1.84</td><td>Estimated session cost at list price. Not your bill; resets on <code>/clear</code>.</td></tr>
+    <tr><td class="sym"><span class="grey">&#xf017;</span> 23m <span class="grey">api</span> 7m</td><td>How long the session has run, and how much of that was spent waiting on the API.</td></tr>
+  </table>
+
+  <h2>Behind it</h2>
+  <table>
+    <tr><td class="sym">Plugin</td><td><a href="https://github.com/MikaelJohnAndersson/glance-statusline">glance</a>. <code>/glance:setup</code> points your <code>statusLine</code> setting at the script, <code>/glance:remove</code> takes it out again.</td></tr>
+    <tr><td class="sym">Files</td><td>The script, this page and the state below live in the plugin’s data folder, <code>~/.claude/plugins/data/glance-glance-statusline/</code>. Each session copies the installed version there.</td></tr>
+    <tr><td class="sym">Refresh</td><td>On each reply, and every 30 s while idle (<code>refreshInterval</code>).</td></tr>
+    <tr><td class="sym">History</td><td>Context readings for the sparkline, one file per session in <code>history/</code>, deleted after 7 days. The last known limits are in <code>limits</code>.</td></tr>
+    <tr><td class="sym">Narrow</td><td>Each row drops detail until it fits. Row 1: the clock. Row 2: the model’s name (its icon stays), the 7d reset time, 7d, the 5h reset time, cache. Row 3: the miss cause, API time, reset clock times, the token breakdown, the sparkline, session time, the window size, the cache group, the resets.</td></tr>
+    <tr><td class="sym">Font</td><td>Icons need a <a href="https://www.nerdfonts.com">Nerd Font</a> in your terminal. If this page shows boxes, that font isn’t available to the browser.</td></tr>
+  </table>
+</main>
+</body>
+</html>

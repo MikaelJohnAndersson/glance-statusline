@@ -1,0 +1,10 @@
+{
+  "name": "glance-statusline",
+  "owner": {
+    "name": "Mikael John Andersson",
+    "url": "https://github.com/MikaelJohnAndersson"
+  },
+  "plugins": [
+    { "name": "glance", "source": "./" }
+  ]
+}

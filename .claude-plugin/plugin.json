@@ -1,0 +1,13 @@
+{
+  "name": "glance",
+  "displayName": "Glance status line",
+  "description": "A three-row Claude Code status line: the repo, context and usage limits at a glance, and token, cache and cost detail on demand",
+  "author": {
+    "name": "Mikael John Andersson",
+    "url": "https://github.com/MikaelJohnAndersson"
+  },
+  "homepage": "https://github.com/MikaelJohnAndersson/glance-statusline",
+  "repository": "https://github.com/MikaelJohnAndersson/glance-statusline",
+  "license": "MIT",
+  "keywords": ["statusline", "status-line", "context", "usage", "rate-limits", "git"]
+}
