@@ -42,10 +42,8 @@ ICON_CONTEXT=$'\xef\x8b\x9b'
 ICON_CACHE=$'\xef\x83\xa7'
 ICON_RESET=$'\xef\x80\xa1'
 ICON_HELP=$'\xef\x81\x99'
-# Between an icon and its label. Regular Nerd Font icons overflow their cell and need the space;
-# a Mono font's don't, and the file tight-icons beside the script drops it.
-ICON_GAP=" "
-[ -e "$DATA_DIR/tight-icons" ] && ICON_GAP=""
+# Between an icon and its label: none suits a Mono Nerd Font, " " the regular one, whose icons overflow their cell
+ICON_GAP=""
 
 c() { printf '\e[38;5;%sm' "$1"; }
 RESET=$'\e[0m'
