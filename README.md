@@ -37,6 +37,15 @@ claude plugin install glance@glance-statusline
 - `jq`, `git` and `bash`. Works on macOS and Linux.
 - A Claude Pro or Max plan for the usage limits; the rest works on any plan.
 
+### Tip: mixing icon sizes in Ghostty
+
+A Mono font keeps the spacing even but draws icons small. [Ghostty](https://ghostty.org) can take chosen icons from the regular, larger variant instead, such as the clock and the `?` on the right of the first row:
+
+```
+font-family = FiraCode Nerd Font Mono
+font-codepoint-map = U+F017,U+F059=FiraCode Nerd Font
+```
+
 ## Commands
 
 | Command | What it does |
