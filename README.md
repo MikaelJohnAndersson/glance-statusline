@@ -46,6 +46,12 @@ font-family = FiraCode Nerd Font Mono
 font-codepoint-map = U+F017,U+F059=FiraCode Nerd Font
 ```
 
+With a Mono font you can also drop the space between each icon and its label:
+
+```
+touch ~/.claude/plugins/data/glance-glance-statusline/tight-icons
+```
+
 ## Commands
 
 | Command | What it does |
