@@ -33,7 +33,7 @@ claude plugin install glance@glance-statusline
 
 ## Requirements
 
-- A [Nerd Font](https://www.nerdfonts.com) in your terminal, for the icons. Without one they show as boxes.
+- A [Nerd Font](https://www.nerdfonts.com) in your terminal, for the icons. Without one they show as boxes. The status line uses whatever font your terminal does; a "Mono" variant, such as FiraCode Nerd Font Mono, keeps every icon to one cell, so the gaps after icons are even.
 - `jq`, `git` and `bash`. Works on macOS and Linux.
 - A Claude Pro or Max plan for the usage limits; the rest works on any plan.
 
