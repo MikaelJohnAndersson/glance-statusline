@@ -42,6 +42,7 @@ ICON_CONTEXT=$'\xef\x8b\x9b'
 ICON_CACHE=$'\xef\x83\xa7'
 ICON_RESET=$'\xef\x80\xa1'
 ICON_HELP=$'\xef\x81\x99'
+ICON_ACCOUNT=$'\xef\x80\x87'
 
 c() { printf '\e[38;5;%sm' "$1"; }
 RESET=$'\e[0m'
@@ -187,6 +188,10 @@ clock="$(c 245)${ICON_CLOCK} $(date +%H:%M)${RESET}${BAR}${DIM}$(link "$CHEATSHE
 
 # --- row 2: Claude at a glance ---
 
+# The signed-in account, which Claude Code keeps in its config rather than sending; the email's name part without a display name
+account=$(jq -r '.oauthAccount // {} | [.displayName, (.emailAddress // "" | split("@")[0])] | map(select(. != null and . != "")) | first // empty' \
+  "${CLAUDE_CONFIG_DIR:-$HOME}/.claude.json" 2>/dev/null)
+
 model_icon=""
 if [ -n "$model" ]; then
   case $(printf '%s' "$model" | tr '[:upper:]' '[:lower:]') in
@@ -239,11 +244,13 @@ fi
 [ -n "$five_pct" ] && five=${five_pct%.*}
 [ -n "$week_pct" ] && week=${week_pct%.*}
 
-DROP_MODEL_NAME=1 DROP_WEEK_RESET=2 DROP_WEEK=3 DROP_FIVE_RESET=4 DROP_CACHE=5
-GLANCE_LEAST=5
+DROP_MODEL_NAME=1 DROP_WEEK_RESET=2 DROP_WEEK=3 DROP_FIVE_RESET=4 DROP_CACHE=5 DROP_ACCOUNT=6
+GLANCE_LEAST=6
 
 glance_row() {
   local level=$1 groups=() part
+
+  [ -n "$account" ] && [ "$level" -lt "$DROP_ACCOUNT" ] && groups+=("$(c 117)${ICON_ACCOUNT}${RESET} ${TEXT}${account}${RESET}")
 
   if [ -n "$model" ]; then
     part="$(c 177)${model_icon}"

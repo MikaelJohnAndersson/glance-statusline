@@ -5,7 +5,7 @@ A status line for [Claude Code](https://code.claude.com) that shows your repo, y
 ![The three rows of the status line](docs/screenshot.png)
 
 - **Row 1, the repo:** folder, branch and `HEAD` (⌘-click opens the PR or commit on GitHub), ahead/behind, staged, modified, untracked and stashed counts, and the lines Claude changed this session. A clock and a `?` link to the cheat sheet sit on the right.
-- **Row 2, Claude at a glance:** the model, context used, how long the prompt cache stays warm, and the 5-hour and 7-day limits with the time until each resets. Colours go from green to amber at 60% and red at 85%.
+- **Row 2, Claude at a glance:** the account you're signed in to, the model, context used, how long the prompt cache stays warm, and the 5-hour and 7-day limits with the time until each resets. Colours go from green to amber at 60% and red at 85%.
 - **Row 3, the detail (off by default):** tokens in the context and the last request's cache split, a sparkline of context over the session, cache hit rate and misses, reset clock times, session cost and time.
 
 Each row drops its least useful parts first when the terminal is narrow. Until a session's first reply, when Claude Code has no numbers yet, row 2 shows the last known ones in grey.

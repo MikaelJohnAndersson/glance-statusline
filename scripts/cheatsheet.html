@@ -73,6 +73,7 @@
 
   <h2>Row 2 — Claude at a glance</h2>
   <table>
+    <tr><td class="sym"><span class="sky">&#xf007;</span> Macke</td><td>The account you’re signed in to: its display name, or the start of its email. Read from <code>.claude.json</code> in <code>$CLAUDE_CONFIG_DIR</code>, or your home folder.</td></tr>
     <tr><td class="sym lilac">&#xf001; Opus</td><td>Opus — a music note (an opus is a musical work).</td></tr>
     <tr><td class="sym lilac">&#xf040; Sonnet</td><td>Sonnet — a pencil.</td></tr>
     <tr><td class="sym lilac">&#xf06c; Haiku</td><td>Haiku — a leaf.</td></tr>
@@ -107,7 +108,7 @@
     <tr><td class="sym">Files</td><td>The script, this page and the state below live in the plugin’s data folder, <code>~/.claude/plugins/data/glance-glance-statusline/</code>. Each session copies the installed version there.</td></tr>
     <tr><td class="sym">Refresh</td><td>On each reply, and every 30 s while idle (<code>refreshInterval</code>).</td></tr>
     <tr><td class="sym">History</td><td>Context readings for the sparkline, one file per session in <code>history/</code>, deleted after 7 days. The last known limits are in <code>limits</code>.</td></tr>
-    <tr><td class="sym">Narrow</td><td>Each row drops detail until it fits. Row 1: the clock and the help icon. Row 2: the model’s name (its icon stays), the 7d reset time, 7d, the 5h reset time, cache. Row 3: the miss cause, API time, reset clock times, the token breakdown, the sparkline, session time, the window size, the cache group, the resets.</td></tr>
+    <tr><td class="sym">Narrow</td><td>Each row drops detail until it fits. Row 1: the clock and the help icon. Row 2: the model’s name (its icon stays), the 7d reset time, 7d, the 5h reset time, cache, the account. Row 3: the miss cause, API time, reset clock times, the token breakdown, the sparkline, session time, the window size, the cache group, the resets.</td></tr>
     <tr><td class="sym">Font</td><td>Icons need a <a href="https://www.nerdfonts.com">Nerd Font</a> in your terminal. If this page shows boxes, that font isn’t available to the browser.</td></tr>
   </table>
 </main>
