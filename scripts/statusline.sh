@@ -31,6 +31,7 @@ USAGE_URL=https://claude.ai/settings/usage
 CHEATSHEET_URL="file://$DATA_DIR/cheatsheet.html"
 DETAIL_FLAG="$DATA_DIR/detail"
 LIMITS_FILE="$DATA_DIR/limits"
+THEME_FILE="$DATA_DIR/theme"
 # wc -m counts characters only under a UTF-8 locale, named differently on macOS and Linux
 UTF8_LOCALE=$(locale -a 2>/dev/null | grep -iE '^(en_US|C)\.utf-?8$' | head -n 1)
 PENDING=244
@@ -189,8 +190,26 @@ clock="$(c 245)${ICON_CLOCK} $(date +%H:%M)${RESET}${BAR}${DIM}$(link "$CHEATSHE
 # --- row 2: Claude at a glance ---
 
 # The signed-in account, which Claude Code keeps in its config rather than sending; the email's name part without a display name
-account=$(jq -r '.oauthAccount // {} | [.displayName, (.emailAddress // "" | split("@")[0])] | map(select(. != null and . != "")) | first // empty' \
-  "${CLAUDE_CONFIG_DIR:-$HOME}/.claude.json" 2>/dev/null)
+IFS=$'\x1f' read -r account account_email <<<"$(jq -r '.oauthAccount // {} | [
+    ([.displayName, (.emailAddress // "" | split("@")[0])] | map(select(. != null and . != "")) | first // ""),
+    (.emailAddress // "")
+  ] | join("\u001f")' "${CLAUDE_CONFIG_DIR:-$HOME}/.claude.json" 2>/dev/null)"
+
+# Each account gets its own colour: the one named in the data folder's theme file, or else one picked from its email
+theme_colour() {
+  case $1 in
+    sky) printf 117 ;; mint) printf 121 ;; lavender) printf 183 ;; pink) printf 212 ;;
+    gold) printf 221 ;; coral) printf 209 ;; teal) printf 80 ;; lilac) printf 141 ;;
+    *) [[ $1 =~ ^[0-9]+$ ]] && [ "$1" -le 255 ] && printf '%s' "$1" ;;
+  esac
+}
+THEMES=(sky mint lavender pink gold coral teal lilac)
+account_colour=""
+[ -r "$THEME_FILE" ] && account_colour=$(theme_colour "$(tr -d '[:space:]' <"$THEME_FILE" | tr '[:upper:]' '[:lower:]')")
+if [ -z "$account_colour" ]; then
+  hash=$(printf '%s' "${account_email:-$account}" | cksum | cut -d ' ' -f 1)
+  account_colour=$(theme_colour "${THEMES[hash % ${#THEMES[@]}]}")
+fi
 
 model_icon=""
 if [ -n "$model" ]; then
@@ -250,7 +269,7 @@ GLANCE_LEAST=6
 glance_row() {
   local level=$1 groups=() part
 
-  [ -n "$account" ] && [ "$level" -lt "$DROP_ACCOUNT" ] && groups+=("$(c 117)${ICON_ACCOUNT}${RESET} ${TEXT}${account}${RESET}")
+  [ -n "$account" ] && [ "$level" -lt "$DROP_ACCOUNT" ] && groups+=("$(c "$account_colour")${ICON_ACCOUNT} ${account}${RESET}")
 
   if [ -n "$model" ]; then
     part="$(c 177)${model_icon}"
