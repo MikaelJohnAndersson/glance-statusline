@@ -58,7 +58,7 @@ font-codepoint-map = U+F017,U+F059=FiraCode Nerd Font
 
 Claude Code can't set a status line from a plugin, so `/glance:setup` writes one entry in your settings. It points at a copy of the script in the plugin's data folder (`~/.claude/plugins/data/glance-glance-statusline/`), which survives updates; every session start refreshes that copy, so updates reach you without running setup again. The context history, last known limits and the detail toggle live in the same folder.
 
-Each account's name shows in its own colour, picked from its email so accounts differ without setup. To choose one, write a theme name or a 256-colour number to a `theme` file in that account's data folder, which sits under its config dir if you run Claude Code with `CLAUDE_CONFIG_DIR`:
+Each account's name, the separators and the folder and model icons show in the account's own colour, picked from its email so accounts differ without setup. To choose one, write a theme name or a 256-colour number to a `theme` file in that account's data folder, which sits under its config dir if you run Claude Code with `CLAUDE_CONFIG_DIR`:
 
 ```sh
 echo pink > ~/.claude/plugins/data/glance-glance-statusline/theme

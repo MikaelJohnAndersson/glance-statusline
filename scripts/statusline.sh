@@ -81,8 +81,31 @@ sparkline() {
   printf '%s' "$out"
 }
 
+# The signed-in account, which Claude Code keeps in its config rather than sending; the email's name part without a display name
+IFS=$'\x1f' read -r account account_email <<<"$(jq -r '.oauthAccount // {} | [
+    ([.displayName, (.emailAddress // "" | split("@")[0])] | map(select(. != null and . != "")) | first // ""),
+    (.emailAddress // "")
+  ] | join("\u001f")' "${CLAUDE_CONFIG_DIR:-$HOME}/.claude.json" 2>/dev/null)"
+
+# Each account gets its own colour, for its name, the separators and the row anchors: the one named in the data folder's theme file, or else one picked from its email
+theme_colour() {
+  case $1 in
+    sky) printf 117 ;; mint) printf 121 ;; lavender) printf 183 ;; pink) printf 212 ;;
+    gold) printf 221 ;; coral) printf 209 ;; teal) printf 80 ;; lilac) printf 141 ;;
+    *) [[ $1 =~ ^[0-9]+$ ]] && [ "$1" -le 255 ] && printf '%s' "$1" ;;
+  esac
+}
+THEMES=(sky mint lavender pink gold coral teal lilac)
+ACCENT=""
+[ -r "$THEME_FILE" ] && ACCENT=$(theme_colour "$(tr -d '[:space:]' <"$THEME_FILE" | tr '[:upper:]' '[:lower:]')")
+# Without an account, as with an API key, everything keeps its own colour
+if [ -z "$ACCENT" ] && [ -n "$account" ]; then
+  hash=$(printf '%s' "${account_email:-$account}" | cksum | cut -d ' ' -f 1)
+  ACCENT=$(theme_colour "${THEMES[hash % ${#THEMES[@]}]}")
+fi
+
 GAP="  "
-BAR=" ${DIM}|${RESET} "
+BAR=" $(c "${ACCENT:-244}")|${RESET} "
 # Claude Code indents the row 2 columns and keeps 2 free at the right
 RIGHT_MARGIN=4
 
@@ -115,7 +138,7 @@ pin_right() {
 
 # --- row 1: the repo ---
 
-SLASH=" ${DIM}/${RESET} "
+SLASH=" $(c "${ACCENT:-244}")/${RESET} "
 
 # remote as https://github.com/owner/repo, or nothing
 github_url() {
@@ -132,7 +155,7 @@ github_url() {
 path=""
 stats=()
 
-[ -n "$dir" ] && path="$(c 75)${ICON_DIR}${RESET} ${TEXT}${dir##*/}${RESET}"
+[ -n "$dir" ] && path="$(c "${ACCENT:-75}")${ICON_DIR}${RESET} ${TEXT}${dir##*/}${RESET}"
 
 if [ -n "$dir" ] && head=$(git -C "$dir" --no-optional-locks rev-parse --short HEAD 2>/dev/null); then
   repo_url=$(github_url)
@@ -188,28 +211,6 @@ repo_row=$path
 clock="$(c 245)${ICON_CLOCK} $(date +%H:%M)${RESET}${BAR}${DIM}$(link "$CHEATSHEET_URL" "$ICON_HELP")${RESET}"
 
 # --- row 2: Claude at a glance ---
-
-# The signed-in account, which Claude Code keeps in its config rather than sending; the email's name part without a display name
-IFS=$'\x1f' read -r account account_email <<<"$(jq -r '.oauthAccount // {} | [
-    ([.displayName, (.emailAddress // "" | split("@")[0])] | map(select(. != null and . != "")) | first // ""),
-    (.emailAddress // "")
-  ] | join("\u001f")' "${CLAUDE_CONFIG_DIR:-$HOME}/.claude.json" 2>/dev/null)"
-
-# Each account gets its own colour: the one named in the data folder's theme file, or else one picked from its email
-theme_colour() {
-  case $1 in
-    sky) printf 117 ;; mint) printf 121 ;; lavender) printf 183 ;; pink) printf 212 ;;
-    gold) printf 221 ;; coral) printf 209 ;; teal) printf 80 ;; lilac) printf 141 ;;
-    *) [[ $1 =~ ^[0-9]+$ ]] && [ "$1" -le 255 ] && printf '%s' "$1" ;;
-  esac
-}
-THEMES=(sky mint lavender pink gold coral teal lilac)
-account_colour=""
-[ -r "$THEME_FILE" ] && account_colour=$(theme_colour "$(tr -d '[:space:]' <"$THEME_FILE" | tr '[:upper:]' '[:lower:]')")
-if [ -z "$account_colour" ]; then
-  hash=$(printf '%s' "${account_email:-$account}" | cksum | cut -d ' ' -f 1)
-  account_colour=$(theme_colour "${THEMES[hash % ${#THEMES[@]}]}")
-fi
 
 model_icon=""
 if [ -n "$model" ]; then
@@ -269,10 +270,10 @@ GLANCE_LEAST=6
 glance_row() {
   local level=$1 groups=() part
 
-  [ -n "$account" ] && [ "$level" -lt "$DROP_ACCOUNT" ] && groups+=("$(c "$account_colour")${ICON_ACCOUNT} ${account}${RESET}")
+  [ -n "$account" ] && [ "$level" -lt "$DROP_ACCOUNT" ] && groups+=("$(c "$ACCENT")${ICON_ACCOUNT} ${account}${RESET}")
 
   if [ -n "$model" ]; then
-    part="$(c 177)${model_icon}"
+    part="$(c "${ACCENT:-177}")${model_icon}${RESET}$(c 177)"
     [ "$level" -lt "$DROP_MODEL_NAME" ] && part+=" ${model}"
     groups+=("${part}${RESET}")
   fi
