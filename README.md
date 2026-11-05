@@ -52,28 +52,24 @@ font-codepoint-map = U+F017,U+F059=FiraCode Nerd Font
 | --- | --- |
 | `/glance:setup` | Turns the status line on |
 | `/glance:detail` | Shows or hides the third row |
+| `/glance:config` | Shows or changes the account's colour and icon |
 | `/glance:remove` | Turns the status line off, before you uninstall |
+
+## Accounts
+
+Each account's name, the separators and the folder and model icons show in the account's own colour, picked from its email so accounts differ without setup. `/glance:config` shows the current settings and the choices; it changes only the account it runs in, so set each one from its own session:
+
+```
+/glance:config colour pink
+/glance:config icon rocket
+/glance:config reset
+```
+
+The colours are `sky`, `mint`, `lavender`, `pink`, `gold`, `coral`, `teal` and `lilac`, or any 256-colour number. The icons are `briefcase`, `home`, `rocket`, `heart`, `star`, `code`, `gamepad` and `flask`, or any emoji. `auto` puts one back to its default. The settings are kept in a `theme` file in the data folder.
 
 ## How it works
 
 Claude Code can't set a status line from a plugin, so `/glance:setup` writes one entry in your settings. It points at a copy of the script in the plugin's data folder (`~/.claude/plugins/data/glance-glance-statusline/`), which survives updates; every session start refreshes that copy, so updates reach you without running setup again. The context history, last known limits and the detail toggle live in the same folder.
-
-Each account's name, the separators and the folder and model icons show in the account's own colour, picked from its email so accounts differ without setup. To choose one, write a theme name or a 256-colour number to a `theme` file in that account's data folder, which sits under its config dir if you run Claude Code with `CLAUDE_CONFIG_DIR`:
-
-```sh
-echo pink > ~/.claude/plugins/data/glance-glance-statusline/theme
-```
-
-The themes are `sky`, `mint`, `lavender`, `pink`, `gold`, `coral`, `teal` and `lilac`.
-
-The same file can give the account its own icon, on an `icon=` line next to a `colour=` one:
-
-```
-colour=gold
-icon=briefcase
-```
-
-The icons are `briefcase`, `home`, `rocket`, `heart`, `star`, `code`, `gamepad` and `flask`; any other text, such as an emoji, is shown as it is.
 
 To get updates, run `claude plugin update glance@glance-statusline`, or turn on auto-update for the marketplace in `/plugin`.
 
