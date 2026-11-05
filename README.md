@@ -66,6 +66,15 @@ echo pink > ~/.claude/plugins/data/glance-glance-statusline/theme
 
 The themes are `sky`, `mint`, `lavender`, `pink`, `gold`, `coral`, `teal` and `lilac`.
 
+The same file can give the account its own icon, on an `icon=` line next to a `colour=` one:
+
+```
+colour=gold
+icon=briefcase
+```
+
+The icons are `briefcase`, `home`, `rocket`, `heart`, `star`, `code`, `gamepad` and `flask`; any other text, such as an emoji, is shown as it is.
+
 To get updates, run `claude plugin update glance@glance-statusline`, or turn on auto-update for the marketplace in `/plugin`.
 
 ## License

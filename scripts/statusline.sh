@@ -35,6 +35,7 @@ THEME_FILE="$DATA_DIR/theme"
 # wc -m counts characters only under a UTF-8 locale, named differently on macOS and Linux
 UTF8_LOCALE=$(locale -a 2>/dev/null | grep -iE '^(en_US|C)\.utf-?8$' | head -n 1)
 PENDING=244
+COFFEE_AFTER_MIN=90
 
 ICON_DIR=$'\xef\x81\xbc'
 ICON_BRANCH=$'\xef\x84\xa6'
@@ -44,6 +45,9 @@ ICON_CACHE=$'\xef\x83\xa7'
 ICON_RESET=$'\xef\x80\xa1'
 ICON_HELP=$'\xef\x81\x99'
 ICON_ACCOUNT=$'\xef\x80\x87'
+ICON_SUN=$'\xef\x86\x85'
+ICON_MOON=$'\xef\x86\x86'
+ICON_COFFEE=$'\xef\x83\xb4'
 
 c() { printf '\e[38;5;%sm' "$1"; }
 RESET=$'\e[0m'
@@ -95,9 +99,29 @@ theme_colour() {
     *) [[ $1 =~ ^[0-9]+$ ]] && [ "$1" -le 255 ] && printf '%s' "$1" ;;
   esac
 }
+# An icon by name, or any other text, such as an emoji, as it is
+theme_icon() {
+  case $1 in
+    user) printf '%s' "$ICON_ACCOUNT" ;; briefcase) printf '\xef\x82\xb1' ;; home) printf '\xef\x80\x95' ;;
+    rocket) printf '\xef\x84\xb5' ;; heart) printf '\xef\x80\x84' ;; star) printf '\xef\x80\x85' ;;
+    code) printf '\xef\x84\xa1' ;; gamepad) printf '\xef\x84\x9b' ;; flask) printf '\xef\x83\x83' ;;
+    *) printf '%s' "$1" ;;
+  esac
+}
 THEMES=(sky mint lavender pink gold coral teal lilac)
 ACCENT=""
-[ -r "$THEME_FILE" ] && ACCENT=$(theme_colour "$(tr -d '[:space:]' <"$THEME_FILE" | tr '[:upper:]' '[:lower:]')")
+# The theme file holds colour= and icon= lines; a line with neither is the colour
+if [ -r "$THEME_FILE" ]; then
+  while IFS= read -r line || [ -n "$line" ]; do
+    line=$(printf '%s' "$line" | tr -d '[:space:][:cntrl:]')
+    case $line in
+      icon=?*) ICON_ACCOUNT=$(theme_icon "${line#icon=}") ;;
+      icon=) ;;
+      colour=*|color=*) ACCENT=$(theme_colour "$(printf '%s' "${line#*=}" | tr '[:upper:]' '[:lower:]')") ;;
+      ?*) ACCENT=$(theme_colour "$(printf '%s' "$line" | tr '[:upper:]' '[:lower:]')") ;;
+    esac
+  done <"$THEME_FILE"
+fi
 # Without an account, as with an API key, everything keeps its own colour
 if [ -z "$ACCENT" ] && [ -n "$account" ]; then
   hash=$(printf '%s' "${account_email:-$account}" | cksum | cut -d ' ' -f 1)
@@ -208,7 +232,20 @@ fi
 repo_row=$path
 [ "${#changes[@]}" -gt 0 ] && repo_row+="${BAR}$(join_with "$GAP" "${changes[@]}")"
 
-clock="$(c 245)${ICON_CLOCK} $(date +%H:%M)${RESET}${BAR}${DIM}$(link "$CHEATSHEET_URL" "$ICON_HELP")${RESET}"
+# The clock follows the day: a sun in the morning, a moon at night
+hour=$(date +%H)
+hour=${hour#0}
+if [ "$hour" -ge 22 ] || [ "$hour" -lt 5 ]; then
+  clock_icon="$(c 147)${ICON_MOON}$(c 245)"
+elif [ "$hour" -lt 11 ]; then
+  clock_icon="$(c 222)${ICON_SUN}$(c 245)"
+else
+  clock_icon=$ICON_CLOCK
+fi
+# A coffee once the session has run for an hour and a half, as a hint to take a break
+coffee=""
+[ -n "$duration_ms" ] && [ "$duration_ms" -ge $(( COFFEE_AFTER_MIN * 60000 )) ] && coffee="$(c 180)${ICON_COFFEE}${RESET} "
+clock="${coffee}$(c 245)${clock_icon} $(date +%H:%M)${RESET}${BAR}${DIM}$(link "$CHEATSHEET_URL" "$ICON_HELP")${RESET}"
 
 # --- row 2: Claude at a glance ---
 

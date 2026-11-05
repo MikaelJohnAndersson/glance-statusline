@@ -68,12 +68,14 @@
     <tr><td class="sym"><span class="purple">≡2</span></td><td>Stash entries.</td></tr>
     <tr><td class="sym"><span class="green">+212</span> <span class="coral">−47</span></td><td>Lines Claude added / removed this session (not the git diff).</td></tr>
     <tr><td class="sym"><span class="grey">&#xf017; 02:31</span></td><td>Clock, pinned to the right with the <span class="grey">&#xf059;</span> beside it. Both are dropped together when the row has no room for them.</td></tr>
+    <tr><td class="sym"><span class="gold">&#xf185;</span> <span class="lilac">&#xf186;</span></td><td>The clock’s icon follows the day: a sun from 05 to 11, a moon from 22 to 05.</td></tr>
+    <tr><td class="sym"><span style="color:#d7af87">&#xf0f4;</span></td><td>The session has run for an hour and a half: a hint to take a break.</td></tr>
     <tr><td class="sym"><span class="grey">&#xf059;</span></td><td><b>⌘-click</b> opens this page.</td></tr>
   </table>
 
   <h2>Row 2 — Claude at a glance</h2>
   <table>
-    <tr><td class="sym"><span class="sky">&#xf007; Macke</span></td><td>The account you’re signed in to: its display name, or the start of its email. Read from <code>.claude.json</code> in <code>$CLAUDE_CONFIG_DIR</code>, or your home folder. Each account gets its own colour, picked from its email, which the separators and the folder and model icons share too; to choose one, write a name (sky, mint, lavender, pink, gold, coral, teal, lilac) or a 256-colour number to a <code>theme</code> file in that account’s glance data folder.</td></tr>
+    <tr><td class="sym"><span class="sky">&#xf007; Macke</span></td><td>The account you’re signed in to: its display name, or the start of its email. Read from <code>.claude.json</code> in <code>$CLAUDE_CONFIG_DIR</code>, or your home folder. Each account gets its own colour, picked from its email, which the separators and the folder and model icons share too; to choose one, write a name (sky, mint, lavender, pink, gold, coral, teal, lilac) or a 256-colour number to a <code>theme</code> file in that account’s glance data folder. An <code>icon=</code> line there swaps the icon: briefcase, home, rocket, heart, star, code, gamepad, flask, or any emoji.</td></tr>
     <tr><td class="sym lilac">&#xf001; Opus</td><td>Opus — a music note (an opus is a musical work).</td></tr>
     <tr><td class="sym lilac">&#xf040; Sonnet</td><td>Sonnet — a pencil.</td></tr>
     <tr><td class="sym lilac">&#xf06c; Haiku</td><td>Haiku — a leaf.</td></tr>
@@ -108,7 +110,7 @@
     <tr><td class="sym">Files</td><td>The script, this page and the state below live in the plugin’s data folder, <code>~/.claude/plugins/data/glance-glance-statusline/</code>. Each session copies the installed version there.</td></tr>
     <tr><td class="sym">Refresh</td><td>On each reply, and every 30 s while idle (<code>refreshInterval</code>).</td></tr>
     <tr><td class="sym">History</td><td>Context readings for the sparkline, one file per session in <code>history/</code>, deleted after 7 days. The last known limits are in <code>limits</code>.</td></tr>
-    <tr><td class="sym">Narrow</td><td>Each row drops detail until it fits. Row 1: the clock and the help icon. Row 2: the model’s name (its icon stays), the 7d reset time, 7d, the 5h reset time, cache, the account. Row 3: the miss cause, API time, reset clock times, the token breakdown, the sparkline, session time, the window size, the cache group, the resets.</td></tr>
+    <tr><td class="sym">Narrow</td><td>Each row drops detail until it fits. Row 1: the clock, the coffee and the help icon. Row 2: the model’s name (its icon stays), the 7d reset time, 7d, the 5h reset time, cache, the account. Row 3: the miss cause, API time, reset clock times, the token breakdown, the sparkline, session time, the window size, the cache group, the resets.</td></tr>
     <tr><td class="sym">Font</td><td>Icons need a <a href="https://www.nerdfonts.com">Nerd Font</a> in your terminal. If this page shows boxes, that font isn’t available to the browser.</td></tr>
   </table>
 </main>
