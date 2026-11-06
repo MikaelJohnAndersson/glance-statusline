@@ -242,8 +242,9 @@ elif [ "$hour" -lt 11 ]; then
 else
   clock_icon=$ICON_CLOCK
 fi
-# A coffee in its place once the session has run for an hour and a half, as a hint to take a break
-[ -n "$duration_ms" ] && [ "$duration_ms" -ge $(( COFFEE_AFTER_MIN * 60000 )) ] && clock_icon="$(c 180)${ICON_COFFEE}$(c 245)"
+# A coffee in its place once the session has run for an hour and a half, as a hint to take a break;
+# the cup is drawn wider than its cell, so it gets an extra space
+[ -n "$duration_ms" ] && [ "$duration_ms" -ge $(( COFFEE_AFTER_MIN * 60000 )) ] && clock_icon="$(c 180)${ICON_COFFEE}$(c 245) "
 clock="$(c 245)${clock_icon} $(date +%H:%M)${RESET}${BAR}${DIM}$(link "$CHEATSHEET_URL" "$ICON_HELP")${RESET}"
 
 # --- row 2: Claude at a glance ---
