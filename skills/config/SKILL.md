@@ -1,6 +1,6 @@
 ---
 description: Show or change the glance status line's settings for this account (colour, icon)
-argument-hint: "[colour <name> | icon <name> | reset]"
+argument-hint: "[<colour or icon> | colour <name> | icon <name> | reset]"
 disable-model-invocation: true
 ---
 

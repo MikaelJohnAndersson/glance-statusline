@@ -242,23 +242,12 @@ elif [ "$hour" -lt 11 ]; then
 else
   clock_icon=$ICON_CLOCK
 fi
-# A coffee once the session has run for an hour and a half, as a hint to take a break
-coffee=""
-[ -n "$duration_ms" ] && [ "$duration_ms" -ge $(( COFFEE_AFTER_MIN * 60000 )) ] && coffee="$(c 180)${ICON_COFFEE}${RESET} "
-clock="${coffee}$(c 245)${clock_icon} $(date +%H:%M)${RESET}${BAR}${DIM}$(link "$CHEATSHEET_URL" "$ICON_HELP")${RESET}"
+# A coffee in its place once the session has run for an hour and a half, as a hint to take a break
+[ -n "$duration_ms" ] && [ "$duration_ms" -ge $(( COFFEE_AFTER_MIN * 60000 )) ] && clock_icon="$(c 180)${ICON_COFFEE}$(c 245)"
+clock="$(c 245)${clock_icon} $(date +%H:%M)${RESET}${BAR}${DIM}$(link "$CHEATSHEET_URL" "$ICON_HELP")${RESET}"
 
 # --- row 2: Claude at a glance ---
 
-model_icon=""
-if [ -n "$model" ]; then
-  case $(printf '%s' "$model" | tr '[:upper:]' '[:lower:]') in
-    *opus*) model_icon=$'\xef\x80\x81' ;;
-    *sonnet*) model_icon=$'\xef\x81\x80' ;;
-    *haiku*) model_icon=$'\xef\x81\xac' ;;
-    *fable*) model_icon=$'\xef\x80\xad' ;;
-    *) model_icon="✦" ;;
-  esac
-fi
 
 # Until a session's first reply Claude Code sends no context or limits; show the last known ones, dim.
 ctx_stale="" limits_stale=""
@@ -310,9 +299,9 @@ glance_row() {
   [ -n "$account" ] && [ "$level" -lt "$DROP_ACCOUNT" ] && groups+=("$(c "$ACCENT")${ICON_ACCOUNT} ${account}${RESET}")
 
   if [ -n "$model" ]; then
-    part="$(c "${ACCENT:-177}")${model_icon}${RESET}$(c 177)"
-    [ "$level" -lt "$DROP_MODEL_NAME" ] && part+=" ${model}"
-    groups+=("${part}${RESET}")
+    # Narrow rows keep the family and drop the version
+    if [ "$level" -lt "$DROP_MODEL_NAME" ]; then part=$model; else part=${model%% *}; fi
+    groups+=("$(c 177)${part}${RESET}")
   fi
 
   if [ -n "$ctx" ]; then

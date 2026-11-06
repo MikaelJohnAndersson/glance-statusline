@@ -57,15 +57,16 @@ font-codepoint-map = U+F017,U+F059=FiraCode Nerd Font
 
 ## Accounts
 
-Each account's name, the separators and the folder and model icons show in the account's own colour, picked from its email so accounts differ without setup. `/glance:config` shows the current settings and the choices; it changes only the account it runs in, so set each one from its own session:
+Each account's name, the separators and the folder icon show in the account's own colour, picked from its email so accounts differ without setup. `/glance:config` shows the current settings and the choices; it changes only the account it runs in, so set each one from its own session:
 
 ```
-/glance:config colour pink
-/glance:config icon rocket
+/glance:config pink
+/glance:config rocket
+/glance:config icon 🦊
 /glance:config reset
 ```
 
-The colours are `sky`, `mint`, `lavender`, `pink`, `gold`, `coral`, `teal` and `lilac`, or any 256-colour number. The icons are `briefcase`, `home`, `rocket`, `heart`, `star`, `code`, `gamepad` and `flask`, or any emoji. `auto` puts one back to its default. The settings are kept in a `theme` file in the data folder.
+The colours are `sky`, `mint`, `lavender`, `pink`, `gold`, `coral`, `teal` and `lilac`, or any 256-colour number. The icons are `briefcase`, `home`, `rocket`, `heart`, `star`, `code`, `gamepad` and `flask`, or any emoji. A colour or icon name works on its own; an emoji needs `icon` before it. `colour auto` or `icon auto` puts one back to its default. The settings are kept in a `theme` file in the data folder.
 
 ## How it works
 

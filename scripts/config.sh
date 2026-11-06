@@ -34,6 +34,14 @@ write_key() {
   if [ -s "$theme.tmp" ]; then mv "$theme.tmp" "$theme"; else rm -f "$theme.tmp" "$theme"; fi
 }
 
+# A colour or icon name on its own sets that; the two lists share no names
+lower_setting=$(printf '%s' "$setting" | tr '[:upper:]' '[:lower:]')
+if [ -z "$value" ] && { [[ " $COLOURS " == *" $lower_setting "* ]] || [[ $lower_setting =~ ^[0-9]+$ ]]; }; then
+  value=$setting setting=colour
+elif [ -z "$value" ] && [[ " $ICONS " == *" $lower_setting "* ]]; then
+  value=$lower_setting setting=icon
+fi
+
 case $setting in
   colour|color)
     lower=$(printf '%s' "$value" | tr '[:upper:]' '[:lower:]')
@@ -70,7 +78,7 @@ case $setting in
     if [ -e "$data/detail" ]; then echo "Detail row: on"; else echo "Detail row: off"; fi
     echo
     echo "Colours: $COLOURS, or a 256-colour number (0–255). Icons: $ICONS, or any emoji."
-    echo "Change with: /glance:config colour <name>, /glance:config icon <name>, /glance:config reset. 'auto' resets one."
+    echo "Change with: /glance:config <colour or icon>, or colour <value>, icon <value> (any emoji), reset. 'auto' resets one."
     exit 0 ;;
   *)
     echo "Unknown setting \"$setting\". Use colour, icon or reset, or nothing to see the current settings." && exit 1 ;;

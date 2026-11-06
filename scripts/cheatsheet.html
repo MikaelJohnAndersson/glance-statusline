@@ -53,7 +53,7 @@
   <p class="lede">What each symbol on the Claude Code status line means. The third row is off until you run <code>/glance:detail</code>. Anything without data is left out, so a row may show fewer parts than this.</p>
 
   <div class="preview mono"><span class="blue">&#xf07c;</span> my-app <span class="d">/</span> <span class="green">&#xf126;</span> main <span class="d">/</span> <span class="grey">e70fed6</span> <span class="d">|</span> <span class="sky">↑2</span> <span class="green">●3</span> <span class="amber">✚9</span> <span class="grey">?1</span>  <span class="green">+212</span> <span class="coral">−47</span>           <span class="grey">&#xf017; 02:31</span> <span class="d">|</span> <span class="d">&#xf059;</span>
-<span class="lilac">&#xf001; Opus 5.5</span> <span class="d">|</span> <span class="green">&#xf2db; 58%</span>  <span class="teal">&#xf0e7; 3m</span> <span class="d">|</span> <span class="d">5h</span> <span class="green">41%</span> <span class="grey">&#xf021; 1h51</span> <span class="d">|</span> <span class="d">7d</span> <span class="green">23%</span> <span class="grey">&#xf021; 4d4h</span>
+<span class="lilac">Opus 5.5</span> <span class="d">|</span> <span class="green">&#xf2db; 58%</span>  <span class="teal">&#xf0e7; 3m</span> <span class="d">|</span> <span class="d">5h</span> <span class="green">41%</span> <span class="grey">&#xf021; 1h51</span> <span class="d">|</span> <span class="d">7d</span> <span class="green">23%</span> <span class="grey">&#xf021; 4d4h</span>
 <span style="color:#87afaf">&#xf2db;</span> 116k<span class="d">/200k</span> <span class="d">r</span> 110k <span class="d">w</span> 4k <span class="d">i</span> 2k <span class="d">o</span> 1k <span style="color:#87afaf">▂▃▅▆</span> <span class="d">|</span> <span class="teal">&#xf0e7;</span> <span class="d">hit</span> 94% <span class="d">miss</span> <span class="amber">1</span> <span class="d">|</span> <span class="grey">&#xf021;</span> <span class="d">5h</span> 1h51 <span class="d">04:43</span>  <span class="d">7d</span> 4d4h <span class="d">Tue 06:51</span> <span class="d">|</span> <span class="gold">$1.84</span>  <span class="grey">&#xf017;</span> 23m <span class="d">api</span> 7m</div>
 
   <h2>Row 1 — the repo</h2>
@@ -69,18 +69,14 @@
     <tr><td class="sym"><span class="green">+212</span> <span class="coral">−47</span></td><td>Lines Claude added / removed this session (not the git diff).</td></tr>
     <tr><td class="sym"><span class="grey">&#xf017; 02:31</span></td><td>Clock, pinned to the right with the <span class="grey">&#xf059;</span> beside it. Both are dropped together when the row has no room for them.</td></tr>
     <tr><td class="sym"><span class="gold">&#xf185;</span> <span class="lilac">&#xf186;</span></td><td>The clock’s icon follows the day: a sun from 05 to 11, a moon from 22 to 05.</td></tr>
-    <tr><td class="sym"><span style="color:#d7af87">&#xf0f4;</span></td><td>The session has run for an hour and a half: a hint to take a break.</td></tr>
+    <tr><td class="sym"><span style="color:#d7af87">&#xf0f4;</span></td><td>Takes the clock’s icon once the session has run for an hour and a half: a hint to take a break.</td></tr>
     <tr><td class="sym"><span class="grey">&#xf059;</span></td><td><b>⌘-click</b> opens this page.</td></tr>
   </table>
 
   <h2>Row 2 — Claude at a glance</h2>
   <table>
-    <tr><td class="sym"><span class="sky">&#xf007; Macke</span></td><td>The account you’re signed in to: its display name, or the start of its email. Read from <code>.claude.json</code> in <code>$CLAUDE_CONFIG_DIR</code>, or your home folder. Each account gets its own colour, picked from its email, which the separators and the folder and model icons share too. <code>/glance:config</code> changes its colour and icon.</td></tr>
-    <tr><td class="sym lilac">&#xf001; Opus</td><td>Opus — a music note (an opus is a musical work).</td></tr>
-    <tr><td class="sym lilac">&#xf040; Sonnet</td><td>Sonnet — a pencil.</td></tr>
-    <tr><td class="sym lilac">&#xf06c; Haiku</td><td>Haiku — a leaf.</td></tr>
-    <tr><td class="sym lilac">&#xf02d; Fable</td><td>Fable — an open book.</td></tr>
-    <tr><td class="sym lilac">✦ other</td><td>Any other model.</td></tr>
+    <tr><td class="sym"><span class="sky">&#xf007; Macke</span></td><td>The account you’re signed in to: its display name, or the start of its email. Read from <code>.claude.json</code> in <code>$CLAUDE_CONFIG_DIR</code>, or your home folder. Each account gets its own colour, picked from its email, which the separators and the folder icon share too. <code>/glance:config</code> changes its colour and icon.</td></tr>
+    <tr><td class="sym lilac">Opus 5.5</td><td>The model. A narrow row keeps only its family, such as Opus.</td></tr>
     <tr><td class="sym"><span class="green">&#xf2db; 58%</span></td><td>Context window used. <span class="green">green</span> below 60%, <span class="amber">amber</span> from 60%, <span class="red">red</span> from 85%.</td></tr>
     <tr><td class="sym grey">&#xf2db; …</td><td>Waiting for Claude Code’s first numbers, sent with the session’s first reply. Before then, context and the limits show their last known values in grey.</td></tr>
     <tr><td class="sym"><span class="teal">&#xf0e7; 3m</span></td><td>Prompt cache is warm, and goes cold in 3 minutes.</td></tr>
@@ -110,7 +106,7 @@
     <tr><td class="sym">Files</td><td>The script, this page and the state below live in the plugin’s data folder, <code>~/.claude/plugins/data/glance-glance-statusline/</code>. Each session copies the installed version there.</td></tr>
     <tr><td class="sym">Refresh</td><td>On each reply, and every 30 s while idle (<code>refreshInterval</code>).</td></tr>
     <tr><td class="sym">History</td><td>Context readings for the sparkline, one file per session in <code>history/</code>, deleted after 7 days. The last known limits are in <code>limits</code>.</td></tr>
-    <tr><td class="sym">Narrow</td><td>Each row drops detail until it fits. Row 1: the clock, the coffee and the help icon. Row 2: the model’s name (its icon stays), the 7d reset time, 7d, the 5h reset time, cache, the account. Row 3: the miss cause, API time, reset clock times, the token breakdown, the sparkline, session time, the window size, the cache group, the resets.</td></tr>
+    <tr><td class="sym">Narrow</td><td>Each row drops detail until it fits. Row 1: the clock and the help icon. Row 2: the model’s version, the 7d reset time, 7d, the 5h reset time, cache, the account. Row 3: the miss cause, API time, reset clock times, the token breakdown, the sparkline, session time, the window size, the cache group, the resets.</td></tr>
     <tr><td class="sym">Font</td><td>Icons need a <a href="https://www.nerdfonts.com">Nerd Font</a> in your terminal. If this page shows boxes, that font isn’t available to the browser.</td></tr>
   </table>
 </main>
